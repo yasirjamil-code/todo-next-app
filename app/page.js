@@ -4,8 +4,9 @@ import axios from "axios";
 import React, { useEffect, useState } from "react";
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
-
+import { useSession } from "next-auth/react";
 const Home = () => {
+  const { data: session, status } = useSession();
   const [formData, setFormData] = useState({
     title: "",
     description: "",
@@ -22,12 +23,17 @@ const Home = () => {
   const onSubmitHandler = async (e) => {
     e.preventDefault();
     try {
-      const response = await axios.post("/api", formData);
-      toast.success(response.data.msg);
-      setFormData({
-        title: "",
-        description: "",
-      });
+      if (status === "authenticated") {
+        const response = await axios.post("/api", formData);
+        toast.success(response.data.msg);
+        setFormData({
+          title: "",
+          description: "",
+        });
+      }
+      else{
+        alert('Please Login before Adding todos')
+      }
       fetchTodo();
     } catch (error) {
       toast.error("Getting Error");
@@ -104,16 +110,31 @@ const Home = () => {
 
       <div className="relative overflow-x-auto mt-24  w-[60%] mx-auto">
         {loading ? ( // Show loading message while loading
-          <h1 className="text-center text-3xl font-extrabold">Loading Todos...</h1>
+          <h1 className="text-center text-3xl font-extrabold">
+            Loading Todos...
+          </h1>
         ) : (
           <table className="w-full text-sm text-left rtl:text-right text-gray-500 dark:text-gray-400">
             <thead className="text-xs text-gray-700 uppercase bg-gray-50 dark:bg-gray-700 dark:text-gray-400">
               <tr>
-                <th scope="col" className="px-6 py-3">Id</th>
-                <th scope="col" className="px-6 py-3">Title</th>
-                <th scope="col" className="px-6 py-3">Description</th>
-                <th scope="col" className="px-6 py-3">Status</th>
-                <th scope="col" className="px-6 py-3">Action</th>
+                <th scope="col" className="px-6 py-3">
+                  User
+                </th>
+                <th scope="col" className="px-6 py-3">
+                  Id
+                </th>
+                <th scope="col" className="px-6 py-3">
+                  Title
+                </th>
+                <th scope="col" className="px-6 py-3">
+                  Description
+                </th>
+                <th scope="col" className="px-6 py-3">
+                  Status
+                </th>
+                <th scope="col" className="px-6 py-3">
+                  Action
+                </th>
               </tr>
             </thead>
             <tbody>

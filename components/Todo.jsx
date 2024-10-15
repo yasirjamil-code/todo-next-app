@@ -1,3 +1,5 @@
+import Image from "next/image";
+
 const Todo = ({
   id,
   title,
@@ -9,6 +11,12 @@ const Todo = ({
 }) => {
   return (
     <tr className="bg-white border-b dark:bg-gray-800 dark:border-gray-700">
+      <th
+        scope="row"
+        className="px-6 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white"
+      >
+        <Image src={'/icon.png'} height={30} width={30} alt="ddfs"/>
+      </th>
       <th
         scope="row"
         className="px-6 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white"

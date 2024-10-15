@@ -2,3 +2,7 @@
 @tailwind components;
 @tailwind utilities;
 
+
+.image{
+    border-radius: 50%;
+}
